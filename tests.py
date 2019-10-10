@@ -56,26 +56,6 @@ class PaintingsTests(TestCase):
         result = self.client.get(f'/listing/{sample_painting_id}/edit')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Cat Videos', result.data)
-    @mock.patch('pymongo.collection.Collection.insert_one')
-    def test_submit_painting(self, mock_insert):
-        """Test submitting a new painting listing."""
-        result = self.client.post('/listing', data=sample_form_data)
-
-        # After submitting, should redirect to that painting's page
-        self.assertEqual(result.status, '302 FOUND')
-        mock_insert.assert_called_with(sample_painting)
-    @mock.patch('pymongo.collection.Collection.update_one')
-    def test_update_painting(self, mock_update):
-        result = self.client.post(f'/listing/{sample_painting_id}', data=sample_form_data)
-
-        self.assertEqual(result.status, '302 FOUND')
-        mock_update.assert_called_with({'_id': sample_painting_id}, {'$set': sample_painting})
-    @mock.patch('pymongo.collection.Collection.delete_one')
-    def test_delete_painting(self, mock_delete):
-        form_data = {'_method': 'DELETE'}
-        result = self.client.post(f'/listing/{sample_painting_id}/delete', data=form_data)
-        self.assertEqual(result.status, '302 FOUND')
-        mock_delete.assert_called_with({'_id': sample_painting_id})
 
 if __name__ == '__main__':
     unittest_main()
