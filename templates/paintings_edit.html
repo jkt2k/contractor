@@ -3,9 +3,9 @@
 {% block content %}
 <div class='row'>
     <div class='col-sm-6 col-sm-offset-3'>
-        <form method='POST' action='/paintings/{{painting._id}}'>
+        <form method='POST' action='/listing/{{painting._id}}'>
             <input type='hidden' name='_method' value='PUT'/>
-            {% include 'partials/paintings_form.html' %}
+            {% include 'partials/listing_form.html' %}
             <!-- BUTTON -->
             <div class='form-group'>
                 <button class='btn btn-primary' type='submit'>Save Painting</button>

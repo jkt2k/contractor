@@ -31,13 +31,13 @@ class PaintingsTests(TestCase):
         # Show Flask errors that happen during tests
         app.config['TESTING'] = True
     def test_index(self):
-        """Test the paintings homepage."""
+        """Test the listing homepage."""
         result = self.client.get('/')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Painting', result.data)
     def test_new(self):
         """Test the new painting listing creation page."""
-        result = self.client.get('/paintings/new')
+        result = self.client.get('/listing/new')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'New Painting Listing', result.data)
     @mock.patch('pymongo.collection.Collection.find_one')
@@ -45,7 +45,7 @@ class PaintingsTests(TestCase):
         """Test showing a single painting."""
         mock_find.return_value = sample_painting
 
-        result = self.client.get(f'/paintings/{sample_painting_id}')
+        result = self.client.get(f'/listing/{sample_painting_id}')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Cat Videos', result.data)
     @mock.patch('pymongo.collection.Collection.find_one')
@@ -53,27 +53,27 @@ class PaintingsTests(TestCase):
         """Test editing a single painting."""
         mock_find.return_value = sample_painting
 
-        result = self.client.get(f'/paintings/{sample_painting_id}/edit')
+        result = self.client.get(f'/listing/{sample_painting_id}/edit')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Cat Videos', result.data)
     @mock.patch('pymongo.collection.Collection.insert_one')
     def test_submit_painting(self, mock_insert):
         """Test submitting a new painting listing."""
-        result = self.client.post('/paintings', data=sample_form_data)
+        result = self.client.post('/listing', data=sample_form_data)
 
         # After submitting, should redirect to that painting's page
         self.assertEqual(result.status, '302 FOUND')
         mock_insert.assert_called_with(sample_painting)
     @mock.patch('pymongo.collection.Collection.update_one')
     def test_update_painting(self, mock_update):
-        result = self.client.post(f'/paintings/{sample_painting_id}', data=sample_form_data)
+        result = self.client.post(f'/listing/{sample_painting_id}', data=sample_form_data)
 
         self.assertEqual(result.status, '302 FOUND')
         mock_update.assert_called_with({'_id': sample_painting_id}, {'$set': sample_painting})
     @mock.patch('pymongo.collection.Collection.delete_one')
     def test_delete_painting(self, mock_delete):
         form_data = {'_method': 'DELETE'}
-        result = self.client.post(f'/paintings/{sample_painting_id}/delete', data=form_data)
+        result = self.client.post(f'/listing/{sample_painting_id}/delete', data=form_data)
         self.assertEqual(result.status, '302 FOUND')
         mock_delete.assert_called_with({'_id': sample_painting_id})
 
