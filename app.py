@@ -27,7 +27,7 @@ def listings_index():
 
 @app.route('/paintings', methods=['POST'])
 def paintings_submit():
-    """Submit a new painting."""
+    """Submit a new painting listing."""
     painting = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
@@ -40,8 +40,8 @@ def paintings_submit():
 
 @app.route('/paintings/new')
 def paintings_new():
-    """Create a new painting."""
-    return render_template('paintings_new.html', painting={}, title='New Painting')
+    """Create a new painting listing."""
+    return render_template('paintings_new.html', painting={}, title='New Painting Listing')
 
 @app.route('/paintings/<painting_id>')
 def paintings_show(painting_id):

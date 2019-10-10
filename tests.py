@@ -36,10 +36,10 @@ class PaintingsTests(TestCase):
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Painting', result.data)
     def test_new(self):
-        """Test the new painting creation page."""
+        """Test the new painting listing creation page."""
         result = self.client.get('/paintings/new')
         self.assertEqual(result.status, '200 OK')
-        self.assertIn(b'New Painting', result.data)
+        self.assertIn(b'New Painting Listing', result.data)
     @mock.patch('pymongo.collection.Collection.find_one')
     def test_show_painting(self, mock_find):
         """Test showing a single painting."""
@@ -58,7 +58,7 @@ class PaintingsTests(TestCase):
         self.assertIn(b'Cat Videos', result.data)
     @mock.patch('pymongo.collection.Collection.insert_one')
     def test_submit_painting(self, mock_insert):
-        """Test submitting a new painting."""
+        """Test submitting a new painting listing."""
         result = self.client.post('/paintings', data=sample_form_data)
 
         # After submitting, should redirect to that painting's page
