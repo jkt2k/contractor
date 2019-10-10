@@ -10,13 +10,13 @@
             at {{ painting.created_at.strftime('%I:%M %p') }}</p>
         {% endif %}
         <h2>By {{ painting.artist }}</h2>
-        <h2>Starting at ${{ painting.price }}</h2>
+        <h4>Starting at ${{ painting.price }}</h4>
         {% for image in painting.images %}
             <div class="card"><div class="card-body">
-                <iframe width="720" height="348" src="{{ image }}"></iframe>
+                <iframe width=500 height=500 src="{{ image }}"></iframe>
             </div></div>
         {% endfor %}
-        <h2>For inquiries, email {{ painting.email }} or call {{ painting.phone }}</h2>
+        <h4>For inquiries, email {{ painting.email }} or call {{ painting.phone }}</h4>
         <p><a href='/listing/{{ painting._id }}/edit'>Edit Listing</a></p>
         <p><form method='POST' action='/listing/{{ painting._id }}/delete'>
             <input type='hidden' name='_method' value='DELETE'>

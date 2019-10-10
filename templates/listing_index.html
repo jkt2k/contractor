@@ -7,7 +7,7 @@
     {% for painting in listing %}
         <div class='col-md-3'>
             <h2><a href='/listing/{{ painting._id }}'>{{ painting.name }}</a></h2>
-            <small>By {{ painting.artist }}</small>
+            <h5>By {{ painting.artist }}</h5>
         </div>
     {% endfor %}
 </div>
