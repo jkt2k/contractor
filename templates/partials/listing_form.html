@@ -14,8 +14,8 @@
 
     <!-- DESCRIPTION -->
     <div class='form-group'>
-        <label for='painting-videos'>Videos</label><br/>
-        <p class='text-muted'>Add videos in the form of 'https://youtube.com/embed/KEY'. Separate with a newline.</p>
-        <textarea class='form-control' id='painting-videos' name='videos' rows='10' />{{ "\n".join(painting.videos) }}</textarea>
+        <label for='painting-images'>Provide Images</label><br/>
+        <p class='text-muted'>Provide Images in the form of [image URL] separated by new lines.</p>
+        <textarea class='form-control' id='painting-images' name='images' rows='10' />{{ "\n".join(painting.images) }}</textarea>
     </div>
 </fieldset>

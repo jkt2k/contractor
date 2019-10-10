@@ -15,10 +15,6 @@ comments = db.comments
 # listing = db.listing
 
 app=Flask(__name__)
-# listing = [
-#     { 'title': 'Cat Videos', 'description': 'Cats acting weird' },
-#     { 'title': '80\'s Music', 'description': 'Don\'t stop believing!' }
-# ]
 
 @app.route('/')
 def listings_index():
@@ -31,7 +27,7 @@ def listing_submit():
     painting = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
-        'videos': request.form.get('videos').split(),
+        'images': request.form.get('images').split(),
         'created_at': datetime.now()
     }
     print(painting)
@@ -56,7 +52,7 @@ def listing_update(painting_id):
     updated_painting = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
-        'videos': request.form.get('videos').split()
+        'images': request.form.get('images').split()
     }
     listing.update_one(
         {'_id': ObjectId(painting_id)},
