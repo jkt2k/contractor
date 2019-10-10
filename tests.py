@@ -1,9 +1,11 @@
+#CREDIT to Make School for providing original test file which this was inspired from
+
 from unittest import TestCase, main as unittest_main, mock
 from bson.objectid import ObjectId
 from app import app
 
-sample_playlist_id = ObjectId('5d55cffc4a3d4031f42827a3')
-sample_playlist = {
+sample_painting_id = ObjectId('5d55cffc4a3d4031f42827a3')
+sample_painting = {
     'title': 'Cat Videos',
     'description': 'Cats acting weird',
     'videos': [
@@ -12,12 +14,12 @@ sample_playlist = {
     ]
 }
 sample_form_data = {
-    'title': sample_playlist['title'],
-    'description': sample_playlist['description'],
-    'videos': '\n'.join(sample_playlist['videos'])
+    'title': sample_painting['title'],
+    'description': sample_painting['description'],
+    'videos': '\n'.join(sample_painting['videos'])
 }
 
-class PlaylistsTests(TestCase):
+class PaintingsTests(TestCase):
     """Flask tests."""
 
     def setUp(self):
@@ -29,51 +31,51 @@ class PlaylistsTests(TestCase):
         # Show Flask errors that happen during tests
         app.config['TESTING'] = True
     def test_index(self):
-        """Test the playlists homepage."""
+        """Test the paintings homepage."""
         result = self.client.get('/')
         self.assertEqual(result.status, '200 OK')
-        self.assertIn(b'Playlist', result.data)
+        self.assertIn(b'Painting', result.data)
     def test_new(self):
-        """Test the new playlist creation page."""
-        result = self.client.get('/playlists/new')
+        """Test the new painting creation page."""
+        result = self.client.get('/paintings/new')
         self.assertEqual(result.status, '200 OK')
-        self.assertIn(b'New Playlist', result.data)
+        self.assertIn(b'New Painting', result.data)
     @mock.patch('pymongo.collection.Collection.find_one')
-    def test_show_playlist(self, mock_find):
-        """Test showing a single playlist."""
-        mock_find.return_value = sample_playlist
+    def test_show_painting(self, mock_find):
+        """Test showing a single painting."""
+        mock_find.return_value = sample_painting
 
-        result = self.client.get(f'/playlists/{sample_playlist_id}')
+        result = self.client.get(f'/paintings/{sample_painting_id}')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Cat Videos', result.data)
     @mock.patch('pymongo.collection.Collection.find_one')
-    def test_edit_playlist(self, mock_find):
-        """Test editing a single playlist."""
-        mock_find.return_value = sample_playlist
+    def test_edit_painting(self, mock_find):
+        """Test editing a single painting."""
+        mock_find.return_value = sample_painting
 
-        result = self.client.get(f'/playlists/{sample_playlist_id}/edit')
+        result = self.client.get(f'/paintings/{sample_painting_id}/edit')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'Cat Videos', result.data)
     @mock.patch('pymongo.collection.Collection.insert_one')
-    def test_submit_playlist(self, mock_insert):
-        """Test submitting a new playlist."""
-        result = self.client.post('/playlists', data=sample_form_data)
+    def test_submit_painting(self, mock_insert):
+        """Test submitting a new painting."""
+        result = self.client.post('/paintings', data=sample_form_data)
 
-        # After submitting, should redirect to that playlist's page
+        # After submitting, should redirect to that painting's page
         self.assertEqual(result.status, '302 FOUND')
-        mock_insert.assert_called_with(sample_playlist)
+        mock_insert.assert_called_with(sample_painting)
     @mock.patch('pymongo.collection.Collection.update_one')
-    def test_update_playlist(self, mock_update):
-        result = self.client.post(f'/playlists/{sample_playlist_id}', data=sample_form_data)
+    def test_update_painting(self, mock_update):
+        result = self.client.post(f'/paintings/{sample_painting_id}', data=sample_form_data)
 
         self.assertEqual(result.status, '302 FOUND')
-        mock_update.assert_called_with({'_id': sample_playlist_id}, {'$set': sample_playlist})
+        mock_update.assert_called_with({'_id': sample_painting_id}, {'$set': sample_painting})
     @mock.patch('pymongo.collection.Collection.delete_one')
-    def test_delete_playlist(self, mock_delete):
+    def test_delete_painting(self, mock_delete):
         form_data = {'_method': 'DELETE'}
-        result = self.client.post(f'/playlists/{sample_playlist_id}/delete', data=form_data)
+        result = self.client.post(f'/paintings/{sample_painting_id}/delete', data=form_data)
         self.assertEqual(result.status, '302 FOUND')
-        mock_delete.assert_called_with({'_id': sample_playlist_id})
+        mock_delete.assert_called_with({'_id': sample_painting_id})
 
 if __name__ == '__main__':
     unittest_main()

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Buy High Quality Art</h1>
+
+<div class='row'>
+    {% for painting in paintings %}
+        <div class='col-md-3'>
+            <h2><a href='/paintings/{{ painting._id }}'>{{ painting.title }}</a></h2>
+            <small>{{ painting.description }}</small>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

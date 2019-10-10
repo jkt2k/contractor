@@ -4,95 +4,95 @@ from pymongo import MongoClient
 from datetime import datetime
 import os
 
-host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/Playlister')
+host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/Contractor')
 client = MongoClient(host=f'{host}?retryWrites=false')
 db = client.get_default_database()
-playlists = db.playlists
+paintings = db.paintings
 comments = db.comments
 
 # client = MongoClient()
-# db = client.Playlister
-# playlists = db.playlists
+# db = client.Contractor
+# paintings = db.paintings
 
 app=Flask(__name__)
-# playlists = [
+# paintings = [
 #     { 'title': 'Cat Videos', 'description': 'Cats acting weird' },
 #     { 'title': '80\'s Music', 'description': 'Don\'t stop believing!' }
 # ]
 
 @app.route('/')
-def playlists_index():
-    """Show all playlists."""
-    return render_template('playlists_index.html', playlists=playlists.find())
+def listings_index():
+    """Show all paintings."""
+    return render_template('paintings_index.html', paintings=paintings.find())
 
-@app.route('/playlists', methods=['POST'])
-def playlists_submit():
-    """Submit a new playlist."""
-    playlist = {
+@app.route('/paintings', methods=['POST'])
+def paintings_submit():
+    """Submit a new painting."""
+    painting = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
         'videos': request.form.get('videos').split(),
         'created_at': datetime.now()
     }
-    print(playlist)
-    playlist_id = playlists.insert_one(playlist).inserted_id
-    return redirect(url_for('playlists_show', playlist_id=playlist_id))
+    print(painting)
+    painting_id = paintings.insert_one(painting).inserted_id
+    return redirect(url_for('paintings_show', painting_id=painting_id))
 
-@app.route('/playlists/new')
-def playlists_new():
-    """Create a new playlist."""
-    return render_template('playlists_new.html', playlist={}, title='New Playlist')
+@app.route('/paintings/new')
+def paintings_new():
+    """Create a new painting."""
+    return render_template('paintings_new.html', painting={}, title='New Painting')
 
-@app.route('/playlists/<playlist_id>')
-def playlists_show(playlist_id):
-    """Show a single playlist."""
-    playlist = playlists.find_one({'_id': ObjectId(playlist_id)})
-    playlist_comments = comments.find({'playlist_id': ObjectId(playlist_id)})
-    return render_template('playlists_show.html', playlist=playlist, comments=playlist_comments)
+@app.route('/paintings/<painting_id>')
+def paintings_show(painting_id):
+    """Show a single painting."""
+    painting = paintings.find_one({'_id': ObjectId(painting_id)})
+    painting_comments = comments.find({'painting_id': ObjectId(painting_id)})
+    return render_template('paintings_show.html', painting=painting, comments=painting_comments)
 
-@app.route('/playlists/<playlist_id>', methods=['POST'])
-def playlists_update(playlist_id):
-    """Submit an edited playlist."""
-    updated_playlist = {
+@app.route('/paintings/<painting_id>', methods=['POST'])
+def paintings_update(painting_id):
+    """Submit an edited painting."""
+    updated_painting = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
         'videos': request.form.get('videos').split()
     }
-    playlists.update_one(
-        {'_id': ObjectId(playlist_id)},
-        {'$set': updated_playlist})
-    return redirect(url_for('playlists_show', playlist_id=playlist_id))
+    paintings.update_one(
+        {'_id': ObjectId(painting_id)},
+        {'$set': updated_painting})
+    return redirect(url_for('paintings_show', painting_id=painting_id))
 
-@app.route('/playlists/<playlist_id>/edit')
-def playlists_edit(playlist_id):
-    """Show the edit form for a playlist."""
-    playlist = playlists.find_one({'_id': ObjectId(playlist_id)})
-    return render_template('playlists_edit.html', playlist=playlist, title='Edit Playlist')
+@app.route('/paintings/<painting_id>/edit')
+def paintings_edit(painting_id):
+    """Show the edit form for a painting."""
+    painting = paintings.find_one({'_id': ObjectId(painting_id)})
+    return render_template('paintings_edit.html', painting=painting, title='Edit Painting')
 
-@app.route('/playlists/<playlist_id>/delete', methods=['POST'])
-def playlists_delete(playlist_id):
-    """Delete one playlist."""
-    playlists.delete_one({'_id': ObjectId(playlist_id)})
-    return redirect(url_for('playlists_index'))
+@app.route('/paintings/<painting_id>/delete', methods=['POST'])
+def paintings_delete(painting_id):
+    """Delete one painting."""
+    paintings.delete_one({'_id': ObjectId(painting_id)})
+    return redirect(url_for('paintings_index'))
 
-@app.route('/playlists/comments', methods=['POST'])
+@app.route('/paintings/comments', methods=['POST'])
 def comments_new():
     """Submit a new comment."""
     comment = {
         'title': request.form.get('title'),
         'content': request.form.get('content'),
-        'playlist_id': ObjectId(request.form.get('playlist_id'))
+        'painting_id': ObjectId(request.form.get('painting_id'))
     }
     print(comment)
     comment_id = comments.insert_one(comment).inserted_id
-    return redirect(url_for('playlists_show', playlist_id=request.form.get('playlist_id')))
+    return redirect(url_for('paintings_show', painting_id=request.form.get('painting_id')))
 
-@app.route('/playlists/comments/<comment_id>', methods=['POST'])
+@app.route('/paintings/comments/<comment_id>', methods=['POST'])
 def comments_delete(comment_id):
     """Action to delete a comment."""
     comment = comments.find_one({'_id': ObjectId(comment_id)})
     comments.delete_one({'_id': ObjectId(comment_id)})
-    return redirect(url_for('playlists_show', playlist_id=comment.get('playlist_id')))
+    return redirect(url_for('paintings_show', painting_id=comment.get('painting_id')))
 
 if __name__=='__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 5000))
