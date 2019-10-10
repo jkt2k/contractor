@@ -10,10 +10,6 @@ db = client.get_default_database()
 listing = db.listing
 comments = db.comments
 
-# client = MongoClient()
-# db = client.Contractor
-# listing = db.listing
-
 app=Flask(__name__)
 
 @app.route('/')
