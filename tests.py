@@ -6,16 +6,16 @@ from app import app
 
 sample_painting_id = ObjectId('5d55cffc4a3d4031f42827a3')
 sample_painting = {
-    'title': 'Cat Videos',
-    'description': 'Cats acting weird',
+    'name': 'Cat Videos',
+    'artist': 'Cats acting weird',
     'images': [
         'https://youtube.com/embed/hY7m5jjJ9mM',
         'https://www.youtube.com/embed/CQ85sUNBK7w'
     ]
 }
 sample_form_data = {
-    'title': sample_painting['title'],
-    'description': sample_painting['description'],
+    'name': sample_painting['name'],
+    'artist': sample_painting['artist'],
     'images': '\n'.join(sample_painting['images'])
 }
 

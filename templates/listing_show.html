@@ -4,18 +4,20 @@
 <a href='/'>Back to Home</a>
 <div class='row'>
     <div class='col-sm-6 col-sm-offset-3'>
-        <h1>{{ painting.title }}</h1>
+        <h1>{{ painting.name }}</h1>
         {% if painting.created_at %}
         <p class='text-muted'>Created on {{ painting.created_at.strftime('%A, %d %B, %Y') }}
             at {{ painting.created_at.strftime('%I:%M %p') }}</p>
         {% endif %}
-        <h2>{{ painting.description }}</h2>
+        <h2>By {{ painting.artist }}</h2>
+        <h2>Starting at ${{ painting.price }}</h2>
         {% for image in painting.images %}
             <div class="card"><div class="card-body">
-                <iframe width="420" height="315" src="{{ image }}"></iframe>
+                <iframe width="720" height="348" src="{{ image }}"></iframe>
             </div></div>
         {% endfor %}
-        <p><a href='/listing/{{ painting._id }}/edit'>Edit</a></p>
+        <h2>For inquiries, email {{ painting.email }} or call {{ painting.phone }}</h2>
+        <p><a href='/listing/{{ painting._id }}/edit'>Edit Listing</a></p>
         <p><form method='POST' action='/listing/{{ painting._id }}/delete'>
             <input type='hidden' name='_method' value='DELETE'>
             <button class='btn btn-primary' type='submit'>Delete</button>

@@ -25,8 +25,11 @@ def listings_index():
 def listing_submit():
     """Submit a new painting listing."""
     painting = {
-        'title': request.form.get('title'),
-        'description': request.form.get('description'),
+        'name': request.form.get('name'),
+        'artist': request.form.get('artist'),
+        'price': request.form.get('price'),
+        'email': request.form.get('email'),
+        'phone': request.form.get('phone'),
         'images': request.form.get('images').split(),
         'created_at': datetime.now()
     }
@@ -37,7 +40,7 @@ def listing_submit():
 @app.route('/listing/new')
 def listing_new():
     """Create a new painting listing."""
-    return render_template('listing_new.html', painting={}, title='New Painting Listing')
+    return render_template('listing_new.html', painting={}, name='New Painting Listing')
 
 @app.route('/listing/<painting_id>')
 def listing_show(painting_id):
@@ -50,8 +53,11 @@ def listing_show(painting_id):
 def listing_update(painting_id):
     """Submit an edited painting."""
     updated_painting = {
-        'title': request.form.get('title'),
-        'description': request.form.get('description'),
+        'name': request.form.get('name'),
+        'artist': request.form.get('artist'),
+        'price': request.form.get('price'),
+        'email': request.form.get('email'),
+        'phone': request.form.get('phone'),
         'images': request.form.get('images').split()
     }
     listing.update_one(
@@ -63,7 +69,7 @@ def listing_update(painting_id):
 def listing_edit(painting_id):
     """Show the edit form for a painting."""
     painting = listing.find_one({'_id': ObjectId(painting_id)})
-    return render_template('listing_edit.html', painting=painting, title='Edit Listing')
+    return render_template('listing_edit.html', painting=painting, name='Edit Listing')
 
 @app.route('/listing/<painting_id>/delete', methods=['POST'])
 def listing_delete(painting_id):
@@ -75,7 +81,7 @@ def listing_delete(painting_id):
 def comments_new():
     """Submit a new comment."""
     comment = {
-        'title': request.form.get('title'),
+        'name': request.form.get('name'),
         'content': request.form.get('content'),
         'painting_id': ObjectId(request.form.get('painting_id'))
     }

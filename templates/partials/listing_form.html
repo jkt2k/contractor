@@ -1,21 +1,37 @@
 <fieldset>
-    <legend>Edit Listing</legend>
-    <!-- TITLE -->
+    <legend>Customize Listing</legend>
+
     <div class='form-group'>
-        <label for='painting-title'>Title</label><br>
-        <input class='form-control' id='painting-title' type='text' name='title' value='{{ painting.title }}'/>
+        <label for='painting-name'>Painting Name</label><br>
+        <input class='form-control' id='painting-name' type='text' name='name' value='{{ painting.name }}'/>
     </div>
 
-    <!-- DESCRIPTION -->
+
     <div class='form-group'>
-        <label for='description'>Description</label><br>
-        <input class='form-control' id='description' type='text' name='description' value='{{ painting.description }}' />
+        <label for='artist'>Artist</label><br>
+        <input class='form-control' id='artist' type='text' name='artist' value='{{ painting.artist }}' />
     </div>
 
-    <!-- DESCRIPTION -->
+    <div class='form-group'>
+        <label for='price'>Price (USD)</label><br>
+        <input class='form-control' id='price' type='text' name='price' value='{{ painting.price }}' />
+    </div>
+
+    <legend>Contact Info</legend>
+
+    <div class='form-group'>
+        <label for='price'>Email</label><br>
+        <input class='form-control' id='email' type='text' name='email' value='{{ painting.email }}' />
+    </div>
+
+    <div class='form-group'>
+        <label for='price'>Phone</label><br>
+        <input class='form-control' id='phone' type='text' name='phone' value='{{ painting.phone }}' />
+    </div>
+
     <div class='form-group'>
         <label for='painting-images'>Provide Images</label><br/>
-        <p class='text-muted'>Provide Images in the form of [image URL] separated by new lines.</p>
+        <p class='text-muted'>Add image URLs separated by new lines. More is better!</p>
         <textarea class='form-control' id='painting-images' name='images' rows='10' />{{ "\n".join(painting.images) }}</textarea>
     </div>
 </fieldset>
