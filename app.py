@@ -67,7 +67,7 @@ def listing_update(painting_id):
 def listing_edit(painting_id):
     """Show the edit form for a painting."""
     painting = listing.find_one({'_id': ObjectId(painting_id)})
-    return render_template('listing_edit.html', painting=painting, title='Edit Painting')
+    return render_template('listing_edit.html', painting=painting, title='Edit Listing')
 
 @app.route('/listing/<painting_id>/delete', methods=['POST'])
 def listing_delete(painting_id):
